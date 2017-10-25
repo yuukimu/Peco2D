@@ -1,14 +1,17 @@
-﻿
-# include <Siv3D.hpp>
+﻿#include "Peco.h"
+#include "Title.h"
+#include "Single.h"
 
 void Main()
 {
-	const Font font(30);
-
+	Peco manager;
+	Window::Resize(1280, 720);
+	manager.add<Title>(L"Title");
+	manager.add<Single>(L"Single");
+	//manager.add<Result>(L"Result");
+	Window::SetTitle(L"PECO");
 	while (System::Update())
 	{
-		font(L"ようこそ、Siv3D の世界へ！").draw();
-
-		Circle(Mouse::Pos(), 50).draw({ 255, 0, 0, 127 });
+		manager.updateAndDraw();
 	}
 }
