@@ -38,25 +38,17 @@ bool Block::checkIntersects(Vec2 pos, int startX) const {
 	return  Block::region.movedBy(-startX * 40, 0).intersects(pos ) && Block::region.y == pos.y;
 }
 
-int Block::checkCollision(Vec2 pos, int startX) const {
+int Block::checkCollision(RectF player, int startX) const {
 	RectF tmp = Block::region.movedBy(-startX * 40, 0);
-	// ‰º
-	if (tmp.top.intersects(pos)) {
-		return 8;
-	}
-	// ã
-	/*if (Block::region.intersects(pos) && Block::region.y + 40 == pos.y - PLAYERH) {
-		return 1;
-	}*/
-	//pos.x += PLAYERW / 2;
-	//pos.y -= 1;
-	// ‰E
-	if ((tmp.left.intersects(pos))) {
-		return 2;
-	}
-	// ¶
-	if (tmp.right.intersects(pos)) {
-		return 4;
+	if (tmp.intersects(player)) {
+		if (tmp.x >= player.x) {
+			// ‰E
+			return 1;
+		}
+		else if (tmp.x + 40 >= player.x) {
+			// ¶
+			return 3;
+		}
 	}
 	return 0;
 }

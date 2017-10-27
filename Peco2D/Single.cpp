@@ -15,12 +15,14 @@ void Single::init()
 
 void Single::update()
 {
-	int status = Single::checkCollision();
-	Single::receiveKeyEvent(status);
-	Single::checkIsGround();
-	if (status < 8)
-	{
-		Single::player.move(0, 1);
+	Single::checkCollision();
+	Single::receiveKeyEvent();
+	if (!Single::player.getIsGrounded()) {
+		Single::player.move(0, 2);
+	}
+
+	if (Single::player.getPosition().y >= 720) {
+		changeScene(L"Title");
 	}
 }
 
@@ -38,11 +40,11 @@ void Single::drawBlocks() const {
 	}
 }
 
-void Single::receiveKeyEvent(int status) {
+void Single::receiveKeyEvent() {
 	if (Single::checkInputFrame()) {
 		if (Input::KeyRight.pressed) {
 			Single::player.setDirection(0);
-			if (status == 2 || status == 6 || status == 10 || status == 14) {
+			if (!Single::player.getRightEnable()) {
 				Single::inputFrame = INPUTFRAME;
 				return;
 			}
@@ -55,7 +57,7 @@ void Single::receiveKeyEvent(int status) {
 			Single::inputFrame = INPUTFRAME;
 		} else if (Input::KeyLeft.pressed) {
 			Single::player.setDirection(1);
-			if (status == 4 || status == 6 || status == 12 || status == 14) {
+			if (!Single::player.getLeftEnable()) {
 				Single::inputFrame = INPUTFRAME;
 				return;
 			}
@@ -70,24 +72,34 @@ void Single::receiveKeyEvent(int status) {
 	}
 }
 
-void Single::checkIsGround() {
-	for (size_t i = 0; i < Single::blocks.size(); i++)
-	{
-		if (Single::blocks[i].checkIntersects(Single::player.getPosition(), Single::startX))
-		{
-			Single::player.setIsGrounded(true);
-			return;
-		} 
+void Single::checkCollision() {
+	Vec2 pos = Single::player.getPosition();
+	// ‰E
+	int x = (pos.x + (Single::startX + 1) * 40) / 40;
+	int y = (pos.y - 40) / 40;
+	if (Single::mapData[y][x] == 0){
+		Single::player.setRightEnable(true);
+	} else {
+		Single::player.setRightEnable(false);
 	}
-	Single::player.setIsGrounded(false);
-}
 
-int Single::checkCollision() const {
-	int sum = 0;
-	for (size_t i = 0; i < Single::blocks.size(); i++) {
-		sum += Single::blocks[i].checkCollision(Single::player.getPosition(), Single::startX);
+	// ¶
+	x = (pos.x + (Single::startX - 1) * 40) / 40;
+	if (Single::mapData[y][x] == 0) {
+		Single::player.setLeftEnable(true);
+	} else {
+		Single::player.setLeftEnable(false);
 	}
-	return sum;
+
+	// ‰º
+	x = (pos.x + Single::startX * 40) / 40;
+	y = pos.y / 40;
+	if (Single::mapData[y][x] == 0) {
+		Single::player.setIsGrounded(false);
+	}
+	else {
+		Single::player.setIsGrounded(true);
+	}
 }
 
 void Single::readMapCSV(String filename)
@@ -106,6 +118,7 @@ void Single::readMapCSV(String filename)
 		for (size_t j = 0; j < columnCount; j++)
 		{
 			int val = csv.getOr<int32>(i, j, 0);
+			Single::mapData[i][j] = val;
 			if (val == 1)
 			{
 				Single::blocks.push_back(Block({ int(j), int(i) }));

@@ -2,9 +2,11 @@
 
 Player::Player()
 {
-	Player::position = Vec2(100, 140);
+	Player::position = Vec2(100, 640);
 	Player::positive = Texture(L"Resource/img/player-sub.png");
 	Player::reverse = Texture(L"Resource/img/player-sub-reverse.png");
+	Player::rightEnable = true;
+	Player::leftEnable = true;
 }
 
 Player::~Player()
@@ -60,4 +62,20 @@ void Player::setIsGrounded(bool isGround) {
 
 bool Player::getIsGrounded() const {
 	return Player::isGrounded;
+}
+
+void Player::setRightEnable(bool enable) {
+	Player::rightEnable = enable;
+}
+
+bool Player::getRightEnable() const {
+	return Player::rightEnable;
+}
+
+void Player::setLeftEnable(bool enable) {
+	Player::leftEnable = enable;
+}
+
+bool Player::getLeftEnable() const {
+	return Player::leftEnable;
 }

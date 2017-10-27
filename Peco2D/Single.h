@@ -10,9 +10,8 @@ class Single : public Peco::Scene
 		void update() override;
 		void draw() const override;
 		void drawBlocks() const;
-		void receiveKeyEvent(int status); // キー入力のイベント処理
-		void checkIsGround();
-		int checkCollision() const;
+		void receiveKeyEvent(); // キー入力のイベント処理
+		void checkCollision();
 
 	private:
 		void readMapCSV(String filename);
@@ -21,6 +20,7 @@ class Single : public Peco::Scene
 	private:
 		int startX = 0;
 		Player player;
+		int mapData[18][1000];
 		Array<Block> blocks;
 		int inputFrame = 0;
 };

@@ -13,6 +13,10 @@ public:
 	void setDirection(int direction);
 	void setIsGrounded(bool isGround);
 	bool getIsGrounded() const;
+	void setRightEnable(bool enable);
+	bool getRightEnable() const;
+	void setLeftEnable(bool enable);
+	bool getLeftEnable() const;
 
 private:
 	Vec2 position;
@@ -20,5 +24,7 @@ private:
 	Texture reverse;
 	int direction = 0; // 0: ‰EŒü‚«  1: ¶Œü‚«
 	bool isGrounded;
+	bool rightEnable;
+	bool leftEnable;
 };
 
