@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-	Player::position = Vec2(100, 640);
+	Player::position = Vec2(100, 140);
 	Player::positive = Texture(L"Resource/img/player-sub.png");
 	Player::reverse = Texture(L"Resource/img/player-sub-reverse.png");
 }
@@ -17,10 +17,10 @@ void Player::draw() const
 {
 	if (Player::direction == 0)
 	{
-		RectF(Player::position.x - 44, Player::position.y - 137, 88, 137)(Player::positive).draw();
+		RectF(Player::position.x - PLAYERW/2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::positive).draw();
 	}
 	else {
-		RectF(Player::position.x - 44, Player::position.y - 137, 88, 137)(Player::reverse).draw();
+		RectF(Player::position.x - PLAYERW/2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::reverse).draw();
 	}
 	
 }
@@ -52,4 +52,12 @@ Vec2 Player::getPosition() const
 
 void Player::setDirection(int direction) {
 	Player::direction = direction;
+}
+
+void Player::setIsGrounded(bool isGround) {
+	Player::isGrounded = isGround;
+}
+
+bool Player::getIsGrounded() const {
+	return Player::isGrounded;
 }

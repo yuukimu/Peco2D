@@ -3,7 +3,7 @@
 #define MAPROWS 18
 #define MAPCOLS 64
 #define INPUTFRAME 6
-#define CHARDX 4
+#define CHARDX 5
 
 void Single::init()
 {
@@ -15,27 +15,54 @@ void Single::init()
 
 void Single::update()
 {
-	if (Single::checkInputFrame())
+	int status = Single::checkCollision();
+	Single::receiveKeyEvent(status);
+	Single::checkIsGround();
+	if (status < 8)
 	{
-		if (Input::KeyRight.pressed)
-		{
+		Single::player.move(0, 1);
+	}
+}
+
+void Single::draw() const
+{
+	Single::drawBlocks();
+	Single::player.draw();
+}
+
+void Single::drawBlocks() const {
+	for (size_t i = 0; i < Single::blocks.size(); i++) {
+		if (Single::blocks[i].checkInRange(Single::startX)) {
+			Single::blocks[i].draw(Single::startX);
+		}
+	}
+}
+
+void Single::receiveKeyEvent(int status) {
+	if (Single::checkInputFrame()) {
+		if (Input::KeyRight.pressed) {
 			Single::player.setDirection(0);
-			if (Single::player.getPosition().x >= 640)
-			{
+			if (status == 2 || status == 6 || status == 10 || status == 14) {
+				Single::inputFrame = INPUTFRAME;
+				return;
+			}
+			if (Single::player.getPosition().x >= 640) {
 				Single::startX++;
 				Single::player.move(CHARDX, 0);
 			} else {
 				Single::player.move(CHARDX * 5, 0);
 			}
 			Single::inputFrame = INPUTFRAME;
-		}
-		else if (Input::KeyLeft.pressed) {
+		} else if (Input::KeyLeft.pressed) {
 			Single::player.setDirection(1);
-			if (Single::startX == 0) {
-				Single::player.move(-CHARDX*5, 0);
+			if (status == 4 || status == 6 || status == 12 || status == 14) {
+				Single::inputFrame = INPUTFRAME;
+				return;
 			}
-			if (Single::player.getPosition().x >= 44 && Single::startX > 0)
-			{
+			if (Single::startX == 0) {
+				Single::player.move(-CHARDX * 5, 0);
+			}
+			if (Single::player.getPosition().x >= 44 && Single::startX > 0) {
 				Single::startX--;
 			}
 			Single::inputFrame = INPUTFRAME;
@@ -43,16 +70,24 @@ void Single::update()
 	}
 }
 
-void Single::draw() const
-{
+void Single::checkIsGround() {
 	for (size_t i = 0; i < Single::blocks.size(); i++)
 	{
-		if (Single::blocks[i].checkInRange(Single::startX))
+		if (Single::blocks[i].checkIntersects(Single::player.getPosition(), Single::startX))
 		{
-			Single::blocks[i].draw(Single::startX);
-		}
+			Single::player.setIsGrounded(true);
+			return;
+		} 
 	}
-	Single::player.draw();
+	Single::player.setIsGrounded(false);
+}
+
+int Single::checkCollision() const {
+	int sum = 0;
+	for (size_t i = 0; i < Single::blocks.size(); i++) {
+		sum += Single::blocks[i].checkCollision(Single::player.getPosition(), Single::startX);
+	}
+	return sum;
 }
 
 void Single::readMapCSV(String filename)

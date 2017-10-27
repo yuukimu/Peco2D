@@ -9,6 +9,10 @@ class Single : public Peco::Scene
 		void init() override;
 		void update() override;
 		void draw() const override;
+		void drawBlocks() const;
+		void receiveKeyEvent(int status); // キー入力のイベント処理
+		void checkIsGround();
+		int checkCollision() const;
 
 	private:
 		void readMapCSV(String filename);
