@@ -38,13 +38,13 @@ void Player::move(int dx, int dy)
 		Player::position.x = 640;
 		return;
 	}
-	//if (Player::position.x < 44 || Player::position.x >= 640)
-	//{
-	//	return;
-	//}
-
 	Player::position.x += dx;
 	Player::position.y += dy;
+}
+
+void Player::setPosition(int x, int y) {
+	Player::position.x = x;
+	Player::position.y = y;
 }
 
 Vec2 Player::getPosition() const

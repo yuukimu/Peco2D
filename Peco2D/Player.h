@@ -9,6 +9,7 @@ public:
 	void update();
 	void draw() const;
 	void move(int dx, int dy);
+	void setPosition(int x, int y);
 	Vec2 getPosition() const;
 	void setDirection(int direction);
 	void setIsGrounded(bool isGround);
