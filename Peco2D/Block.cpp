@@ -8,7 +8,6 @@ Block::Block(int x, int y)
 {
 	Block::x = x;
 	Block::y = y;
-	int tx = x % 32;
 	Block::region = RectF(x*40, y*40, 40, 40);
 }
 
@@ -20,7 +19,6 @@ void Block::update() {};
 
 void Block::draw(int startX) const
 {
-	int dx = startX % 32;
 	Block::region.movedBy(-startX*40,0)(TextureAsset(L"block")).draw();
 }
 

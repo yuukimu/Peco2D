@@ -11,6 +11,7 @@ void Single::init()
 	Single::readMapCSV(L"stage1");
 	TextureAsset::Register(L"block", L"Resource/img/block.png");
 	TextureAsset::Register(L"bullet", L"Resource/img/bullet.png");
+	TextureAsset::Register(L"grass", L"Resource/img/grass2.png");
 	Single::player = Player();
 	Single::bullet = Bullet();
 }
@@ -18,11 +19,13 @@ void Single::init()
 void Single::update()
 {
 	Single::checkCollision();
-	Single::receiveKeyEvent();
-	if (!Single::player.getIsGrounded()) {
-		Single::player.move(0, 2);
+	Single::receiveHideEvent();
+	if (!Single::player.getIsHiden())
+	{
+		Single::receiveKeyEvent();
+		Single::receiveAtackEvent();
 	}
-	Single::receiveAtackEvent();
+	Single::player.update();
 	Single::bullet.update();
 	if (Single::player.getPosition().y >= 720) {
 		changeScene(L"Title");
@@ -32,6 +35,7 @@ void Single::update()
 void Single::draw() const
 {
 	Single::drawBlocks();
+	Single::drawGrass();
 	Single::player.draw();
 	Single::bullet.draw();
 }
@@ -41,6 +45,13 @@ void Single::drawBlocks() const {
 		if (Single::blocks[i].checkInRange(Single::startX)) {
 			Single::blocks[i].draw(Single::startX);
 		}
+	}
+}
+
+void Single::drawGrass() const {
+	size_t len = Single::grasses.size();
+	for (size_t i = 0; i < len; i++) {
+		Single::grasses[i].draw(Single::startX);
 	}
 }
 
@@ -83,23 +94,40 @@ void Single::receiveAtackEvent() {
 	}
 }
 
+void Single::receiveHideEvent() {
+	if (Input::KeyDown.clicked) {
+		if (Single::player.getIsHiden()) {
+			Single::player.setIsHiden(false);
+			return;
+		}
+		Vec2 pos = Single::player.getPosition();
+		int x = (pos.x + Single::startX * 40) / 40;
+		int y = (pos.y - 40) / 40;
+		if (Single::mapData[y][x] == 2) {
+			Single::player.setIsHiden(true);
+		}
+	}
+}
+
 void Single::checkCollision() {
 	Vec2 pos = Single::player.getPosition();
 	// ‰E
 	int x = (pos.x + (Single::startX + 1) * 40) / 40;
 	int y = (pos.y - 40) / 40;
-	if (Single::mapData[y][x] == 0 && Single::mapData[y-1][x] == 0 && Single::mapData[y - 2][x] == 0){
-		Single::player.setRightEnable(true);
-	} else {
+	if (Single::mapData[y][x] == 1 || Single::mapData[y - 1][x] == 1 || Single::mapData[y - 2][x] == 1) {
 		Single::player.setRightEnable(false);
+	}
+	else {
+		Single::player.setRightEnable(true);
 	}
 
 	// ¶
 	x = (pos.x + (Single::startX - 1) * 40) / 40;
-	if (Single::mapData[y][x] == 0 && Single::mapData[y - 1][x] == 0 && Single::mapData[y - 2][x] == 0) {
-		Single::player.setLeftEnable(true);
-	} else {
+	if (Single::mapData[y][x] == 1 || Single::mapData[y - 1][x] == 1 || Single::mapData[y - 2][x] == 1) {
 		Single::player.setLeftEnable(false);
+	}
+	else {
+		Single::player.setLeftEnable(true);
 	}
 
 	// ‰º
@@ -129,6 +157,8 @@ void Single::readMapCSV(String filename)
 			Single::mapData[i][j] = val;
 			if (val == 1) {
 				Single::blocks.push_back(Block({ int(j), int(i) }));
+			} else if (val == 2) {
+				Single::grasses.push_back(Grass(j, i));
 			}
 		}
 	}

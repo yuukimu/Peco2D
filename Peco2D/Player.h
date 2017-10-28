@@ -18,14 +18,18 @@ public:
 	bool getRightEnable() const;
 	void setLeftEnable(bool enable);
 	bool getLeftEnable() const;
+	void setIsHiden(bool flag);
+	bool getIsHiden() const;
 
 private:
 	Vec2 position;
 	Texture positive;
 	Texture reverse;
+	Texture hide;
 	int direction = 0; // 0: ‰EŒü‚«  1: ¶Œü‚«
 	bool isGrounded;
 	bool rightEnable;
 	bool leftEnable;
+	bool isHiden;
 };
 

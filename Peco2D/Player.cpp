@@ -3,25 +3,34 @@
 Player::Player()
 {
 	Player::position = Vec2(100, 640);
-	Player::positive = Texture(L"Resource/img/player-sub.png");
-	Player::reverse = Texture(L"Resource/img/player-sub-reverse.png");
+	Player::positive = Texture(L"Resource/img/PecoBear1.png");
+	Player::reverse = Texture(L"Resource/img/PecoBear1-reverse.png");
+	Player::hide = Texture(L"Resource/img/player-hide.png");
 	Player::rightEnable = true;
 	Player::leftEnable = true;
+	Player::isHiden = false;
 }
 
 Player::~Player()
 {
 }
 
-void Player::update() {}
+void Player::update() {
+	if (!Player::isGrounded)
+	{
+		Player::move(0, 2);
+	}
+}
 
 void Player::draw() const
 {
-	if (Player::direction == 0)
-	{
-		RectF(Player::position.x - PLAYERW/2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::positive).draw();
+	if (Player::isHiden) {
+		RectF(Player::position.x - PLAYERW / 2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::hide).draw();
+		return;
 	}
-	else {
+	if (Player::direction == 0) {
+		RectF(Player::position.x - PLAYERW/2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::positive).draw();
+	} else {
 		RectF(Player::position.x - PLAYERW/2, Player::position.y - PLAYERH, PLAYERW, PLAYERH)(Player::reverse).draw();
 	}
 	
@@ -78,4 +87,12 @@ void Player::setLeftEnable(bool enable) {
 
 bool Player::getLeftEnable() const {
 	return Player::leftEnable;
+}
+
+void Player::setIsHiden(bool flag) {
+	Player::isHiden = flag;
+}
+
+bool Player::getIsHiden() const {
+	return Player::isHiden;
 }

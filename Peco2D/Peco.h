@@ -4,8 +4,8 @@
 # include <Siv3D.hpp>
 # include <HamFramework.hpp>
 
-#define PLAYERH 137
-#define PLAYERW 88
+#define PLAYERH 120
+#define PLAYERW 80
 
 struct CommonData
 {

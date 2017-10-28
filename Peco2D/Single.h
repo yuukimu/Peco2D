@@ -3,6 +3,7 @@
 #include "Block.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Grass.h"
 
 class Single : public Peco::Scene
 {
@@ -11,8 +12,10 @@ class Single : public Peco::Scene
 		void update() override;
 		void draw() const override;
 		void drawBlocks() const;
+		void drawGrass() const;
 		void receiveKeyEvent(); // キー入力のイベント処理
 		void receiveAtackEvent();
+		void receiveHideEvent();
 		void checkCollision();
 
 	private:
@@ -26,6 +29,7 @@ class Single : public Peco::Scene
 		Bullet bullet;
 		int mapData[18][1000];
 		Array<Block> blocks;
+		Array<Grass> grasses;
 		int inputFrame = 0;
 };
 
