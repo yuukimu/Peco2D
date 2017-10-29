@@ -23,6 +23,7 @@ void Single::update()
 	if (!Single::player.getIsHiden())
 	{
 		Single::receiveKeyEvent();
+		Single::receiveJumpEvent();
 		Single::receiveAtackEvent();
 	}
 	Single::player.update();
@@ -109,6 +110,14 @@ void Single::receiveHideEvent() {
 	}
 }
 
+void Single::receiveJumpEvent() {
+	if (Input::KeyUp.clicked) {
+		if (Single::player.getJumpFrame() == 0 && Single::player.getIsGrounded()) {
+			Single::player.setJumpFrame(50);
+		}
+	}
+}
+
 void Single::checkCollision() {
 	Vec2 pos = Single::player.getPosition();
 	// ‰E
@@ -133,11 +142,16 @@ void Single::checkCollision() {
 	// ‰º
 	x = (pos.x + Single::startX * 40) / 40;
 	y = pos.y / 40;
-	if (Single::mapData[y][x] == 0) {
+	if (Single::mapData[y][x] == 1) {
+		Single::player.setIsGrounded(true);
+	} else {
+		Single::player.setIsGrounded(false);
+	}
+	/*if (Single::mapData[y][x] == 0) {
 		Single::player.setIsGrounded(false);
 	} else {
 		Single::player.setIsGrounded(true);
-	}
+	}*/
 }
 
 void Single::readMapCSV(String filename)

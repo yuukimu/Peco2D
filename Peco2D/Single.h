@@ -16,6 +16,7 @@ class Single : public Peco::Scene
 		void receiveKeyEvent(); // キー入力のイベント処理
 		void receiveAtackEvent();
 		void receiveHideEvent();
+		void receiveJumpEvent();
 		void checkCollision();
 
 	private:

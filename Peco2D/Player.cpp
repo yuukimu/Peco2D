@@ -16,9 +16,11 @@ Player::~Player()
 }
 
 void Player::update() {
-	if (!Player::isGrounded)
-	{
-		Player::move(0, 2);
+	if (Player::jumpFrame > 0) {
+		Player::move(0, -0.16 * Player::jumpFrame);
+		Player::jumpFrame--;
+	} else if (!Player::isGrounded && Player::jumpFrame == 0) {
+		Player::move(0, 4);
 	}
 }
 
@@ -95,4 +97,12 @@ void Player::setIsHiden(bool flag) {
 
 bool Player::getIsHiden() const {
 	return Player::isHiden;
+}
+
+void Player::setJumpFrame(int frame) {
+	Player::jumpFrame = frame;
+}
+
+int Player::getJumpFrame() const {
+	return Player::jumpFrame;
 }

@@ -20,6 +20,8 @@ public:
 	bool getLeftEnable() const;
 	void setIsHiden(bool flag);
 	bool getIsHiden() const;
+	void setJumpFrame(int frame);
+	int getJumpFrame() const;
 
 private:
 	Vec2 position;
@@ -27,6 +29,7 @@ private:
 	Texture reverse;
 	Texture hide;
 	int direction = 0; // 0: ‰EŒü‚«  1: ¶Œü‚«
+	int jumpFrame = 0;
 	bool isGrounded;
 	bool rightEnable;
 	bool leftEnable;
