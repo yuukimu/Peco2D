@@ -11,7 +11,7 @@ public:
 	void update();
 	void draw() const;
 	void move(int dx, int dy);
-	void setPositon(int x, int y);
+	void setPositon(double x, double y);
 	Vec2 getPosition() const;
 	void setRadian(double radian);
 	double getRadian() const;

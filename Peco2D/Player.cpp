@@ -17,10 +17,15 @@ Player::~Player()
 
 void Player::update() {
 	if (Player::jumpFrame > 0) {
-		Player::move(0, -0.16 * Player::jumpFrame);
-		Player::jumpFrame--;
+		Player::move(0,int( -0.16 * Player::jumpFrame--));
 	} else if (!Player::isGrounded && Player::jumpFrame == 0) {
-		Player::move(0, 4);
+		Player::move(0, int(0.16 * Player::fallFrame));
+		if (Player::fallFrame < 50) {
+			Player::fallFrame++;
+		}
+	}
+	if (Player::isGrounded && Player::fallFrame > 0) {
+		Player::fallFrame = 0;
 	}
 }
 
@@ -40,7 +45,7 @@ void Player::draw() const
 
 void Player::move(int dx, int dy)
 {
-	int tmpX = Player::position.x + dx;
+	int tmpX = int(Player::position.x) + dx;
 	if (tmpX < 44)
 	{
 		Player::position.x = 44;

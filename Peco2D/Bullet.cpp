@@ -37,7 +37,7 @@ void Bullet::move(int dx, int dy) {
 	Bullet::position.y += dy;
 }
 
-void Bullet::setPositon(int x, int y) {
+void Bullet::setPositon(double x, double y) {
 	Bullet::position = Vec2(x, y);
 }
 

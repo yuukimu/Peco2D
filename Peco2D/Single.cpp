@@ -102,8 +102,8 @@ void Single::receiveHideEvent() {
 			return;
 		}
 		Vec2 pos = Single::player.getPosition();
-		int x = (pos.x + Single::startX * 40) / 40;
-		int y = (pos.y - 40) / 40;
+		int x = ((int)pos.x + Single::startX * 40) / 40;
+		int y = ((int)pos.y - 40) / 40;
 		if (Single::mapData[y][x] == 2) {
 			Single::player.setIsHiden(true);
 		}
@@ -121,8 +121,8 @@ void Single::receiveJumpEvent() {
 void Single::checkCollision() {
 	Vec2 pos = Single::player.getPosition();
 	// âE
-	int x = (pos.x + (Single::startX + 1) * 40) / 40;
-	int y = (pos.y - 40) / 40;
+	int x = ((int)pos.x + (Single::startX + 1) * 40) / 40;
+	int y = ((int)pos.y - 40) / 40;
 	if (Single::mapData[y][x] == 1 || Single::mapData[y - 1][x] == 1 || Single::mapData[y - 2][x] == 1) {
 		Single::player.setRightEnable(false);
 	}
@@ -131,7 +131,7 @@ void Single::checkCollision() {
 	}
 
 	// ç∂
-	x = (pos.x + (Single::startX - 1) * 40) / 40;
+	x = ((int)pos.x + (Single::startX - 1) * 40) / 40;
 	if (Single::mapData[y][x] == 1 || Single::mapData[y - 1][x] == 1 || Single::mapData[y - 2][x] == 1) {
 		Single::player.setLeftEnable(false);
 	}
@@ -140,8 +140,8 @@ void Single::checkCollision() {
 	}
 
 	// â∫
-	x = (pos.x + Single::startX * 40) / 40;
-	y = pos.y / 40;
+	x = ((int)pos.x + Single::startX * 40) / 40;
+	y = (int)pos.y / 40;
 	if (Single::mapData[y][x] == 1) {
 		Single::player.setIsGrounded(true);
 	} else {
@@ -161,9 +161,9 @@ void Single::readMapCSV(String filename)
 	if (!csv) return;
 
 	// CSVÇÃçsêî
-	const int rowsCount = csv.rows;
+	const size_t rowsCount = csv.rows;
 	// CSVÇÃóÒêî
-	const int columnCount = csv.columns(0);
+	const size_t columnCount = csv.columns(0);
 
 	for (size_t i = 0; i < rowsCount; i++) {
 		for (size_t j = 0; j < columnCount; j++) {
@@ -172,7 +172,7 @@ void Single::readMapCSV(String filename)
 			if (val == 1) {
 				Single::blocks.push_back(Block({ int(j), int(i) }));
 			} else if (val == 2) {
-				Single::grasses.push_back(Grass(j, i));
+				Single::grasses.push_back(Grass((int)j, (int)i));
 			}
 		}
 	}

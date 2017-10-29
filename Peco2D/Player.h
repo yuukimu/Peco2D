@@ -30,6 +30,7 @@ private:
 	Texture hide;
 	int direction = 0; // 0: ‰EŒü‚«  1: ¶Œü‚«
 	int jumpFrame = 0;
+	int fallFrame = 0;
 	bool isGrounded;
 	bool rightEnable;
 	bool leftEnable;
